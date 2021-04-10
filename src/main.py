@@ -1,11 +1,11 @@
 
-import os
-import argparse
-import sys
+from os import path, getcwd
+from argparse import ArgumentParser
 
 
-my_parser: argparse.ArgumentParser = argparse.ArgumentParser(
+my_parser: ArgumentParser = ArgumentParser(
     description="this is a simple transpiler for brainfuck", epilog="enjoy the program :)")
+#some additions
 my_parser.add_argument("-name",
                        type=str, help='that the file is going to have')
 my_parser.add_argument("-file",
@@ -31,26 +31,25 @@ def made_output(input: str) -> str:
             out += "while (bfvar[ptr]) {"
         elif i == "]":
             out += "}"
-
     return out
 
 
 def main():
     # input
     args: my_parser.parse_args = my_parser.parse_args()
-
-    brainfuck_file: open = open(os.path.join(os.getcwd(), args.file), "r")
-    output_c = "#include <stdio.h>\nint bfvar[3000];unsigned int ptr; int main(){" + made_output(
+    brainfuck_file: open = open(path.join(getcwd(), args.file), "r")
+    #this is the expected output
+    output_c: str = "#include <stdio.h>\nint bfvar[3000];unsigned int ptr; int main(){" + made_output(
         brainfuck_file.read()) + "return 0;}"
-    
     brainfuck_file.close()
     # output
     name:str
     if args.name is not None:
         name = args.name
     else:
-        name="default.c"
-    with open(os.path.join(os.getcwd(), name),"w+") as fs:
+        name = "default.c"
+    # Create the file
+    with open(path.join(getcwd(), name), "w+") as fs:
         fs.write(output_c)
         
 
