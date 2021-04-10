@@ -20,15 +20,15 @@ def made_output(bf_input: str) -> str:
         elif i == "<":
             out += "ptr--;"
         elif i == "+":
-            out += "bfvar[ptr]++;"
+            out += "(*ptr)++;"
         elif i == "-":
-            out += "bfvar[ptr]--;"
+            out += "(*ptr)--;"
         elif i == ".":
-            out += "putchar(bfvar[ptr]);"
+            out += "putchar(*ptr);"
         elif i == ",":
-            out += "(bfvar[ptr])=getchar();"
+            out += "(*ptr)=getchar();"
         elif i == "[":
-            out += "while (bfvar[ptr]) {"
+            out += "while (*ptr) {"
         elif i == "]":
             out += "}"
     return out
@@ -39,7 +39,7 @@ def main():
     args: my_parser.parse_args = my_parser.parse_args()
     brainfuck_file: open = open(path.join(getcwd(), args.file), "r")
     #this is the expected output
-    output_c: str = "#include <stdio.h>\nint bfvar[3000];unsigned int ptr; int main(){" + made_output(
+    output_c: str = "#include <stdio.h>\nchar array[30000] = {0}; char *ptr = &array[0]; int main(){" + made_output(
         brainfuck_file.read()) + "return 0;}"
     brainfuck_file.close()
     # output
