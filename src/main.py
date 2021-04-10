@@ -12,9 +12,9 @@ my_parser.add_argument("-file",
                        type=str, required=True, help='the file that the program is going to transpile')
 
 
-def made_output(input: str) -> str:
+def made_output(bf_input: str) -> str:
     out: str = ""
-    for i in input:
+    for i in bf_input:
         if i == ">":
             out += "ptr++;"
         elif i == "<":
